@@ -145,8 +145,6 @@ const BillingDashboardSkeleton: React.FC = () => (
       </div>
 
       <div className={styles.usageBody}>
-        {/* "circle" isn't a confirmed SkeletonType value from the props table,
-            so use a square rectangle sized to match the real donut chart instead */}
         <Skeleton type="rectangle" width={220} height={220} />
 
         <div className={styles.statsGrid}>

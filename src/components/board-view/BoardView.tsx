@@ -5,7 +5,9 @@ import { EventLogsPanel } from "./EventLogsPanel";
 import { WorkflowTable } from "./WorkflowTable";
 import { BillingDashboard } from "./BillingDashboard";
 import styles from "./BoardView.module.css";
+import mondaySdk from "monday-sdk-js";
 import { BillingSummary, BillingCredits } from "../../types/index";
+const monday = mondaySdk();
 
 export const BoardView: React.FC = () => {
   const { loading, client } = useKonnectify();
@@ -29,7 +31,8 @@ export const BoardView: React.FC = () => {
       const billings = await client.getBillingInfo2();
       const credits = await client.getBillingCredits();
       setBillingData(billings);
-      setBillingCredits(credits)
+      setBillingCredits(credits);
+      monday.execute('valueCreatedForUser');
     } catch (err) {
       setBillingError(
         err instanceof Error ? err.message : "Failed to load billing information",

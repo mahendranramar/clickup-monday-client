@@ -3,7 +3,9 @@ import { Loader } from "@vibe/core";
 import { useKonnectify } from "../../hooks";
 import { EmptyPlaceholder } from "../common/EmptyPlaceholder";
 import { iframeService } from "../../services/iframeService";
+import mondaySdk from "monday-sdk-js";
 import styles from "./EventLogsPanel.module.css";
+const monday = mondaySdk();
 
 export const EventLogsPanel: React.FC = () => {
   const { tenant, ensureToken, isConfigured } = useKonnectify();
@@ -21,6 +23,7 @@ export const EventLogsPanel: React.FC = () => {
         const token = await ensureToken();
         const url = iframeService.buildBootstrapUrl(tenant.domain, "/iframe-event-logs", token);
         setIframeUrl(url);
+        monday.execute('valueCreatedForUser');
       } catch (err) {
         // ignore: will show empty state
       } finally {

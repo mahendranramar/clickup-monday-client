@@ -5,8 +5,10 @@ import { iframeService } from "../../services/iframeService";
 import { workflowService } from "../../services/workflowService";
 import { EmptyPlaceholder } from "../common/EmptyPlaceholder";
 import { useToast } from "../common/useToast";
+import mondaySdk from "monday-sdk-js";
 import type { IframeDestination, Workflow } from "../../types";
 import styles from "./WorkflowTable.module.css";
+const monday = mondaySdk();
 
 type ActionType = IframeDestination["type"];
 
@@ -17,15 +19,7 @@ interface DetailView {
 }
 
 export const WorkflowTable: React.FC = () => {
-  const {
-    client,
-    tenant,
-    workflows,
-    refreshWorkflows,
-    isConfigured,
-    ensureToken,
-  } = useKonnectify();
-  //const { tenant, ensureToken, isConfigured } = useKonnectify();
+  const { client, tenant, workflows, refreshWorkflows, isConfigured, ensureToken } = useKonnectify();
   const { showToast, toastElement } = useToast();
 
   const [search, setSearch] = useState("");
@@ -50,10 +44,9 @@ export const WorkflowTable: React.FC = () => {
   const filtered = useMemo(() => {
     const term = search.toLowerCase();
     if (!term) return workflows;
+    monday.execute("valueCreatedForUser"); // for searching
     return workflows.filter(
-      (w) =>
-        w.name.toLowerCase().includes(term) ||
-        (w.description ?? "").toLowerCase().includes(term),
+      (w) => w.name.toLowerCase().includes(term) || (w.description ?? "").toLowerCase().includes(term)
     );
   }, [workflows, search]);
 
@@ -65,11 +58,7 @@ export const WorkflowTable: React.FC = () => {
       try {
         const token = await ensureToken();
         const url = workflow
-          ? iframeService.buildDestinationUrl(
-              tenant.domain,
-              { type, workflowId: workflow.id },
-              token,
-            )
+          ? iframeService.buildDestinationUrl(tenant.domain, { type, workflowId: workflow.id }, token)
           : iframeService.buildDestinationUrl(tenant.domain, { type: "create" }, token);
         setDetailView({ workflow, type, url });
       } catch (err) {
@@ -79,7 +68,7 @@ export const WorkflowTable: React.FC = () => {
         setIframeLoading(false);
       }
     },
-    [tenant, ensureToken, showToast],
+    [tenant, ensureToken, showToast]
   );
 
   const closeDetail = useCallback(() => {
@@ -177,15 +166,17 @@ export const WorkflowTable: React.FC = () => {
 
       <div className={styles.toolbar}>
         <div className={styles.searchWrap}>
-          <Search
-            placeholder="Search workflows…"
-            value={search}
-            onChange={setSearch}
-            size="medium"
-          />
+          <Search placeholder="Search workflows…" value={search} onChange={setSearch} size="medium" />
         </div>
         {listLoading && <Loader size="small" />}
-        <Button kind="primary" size="small" onClick={() => void openDetail(null, "create")}>
+        <Button
+          kind="primary"
+          size="small"
+          onClick={() => {
+            void openDetail(null, "create");
+            monday.execute("valueCreatedForUser");
+          }}
+        >
           + Create Konnector
         </Button>
       </div>
@@ -198,9 +189,7 @@ export const WorkflowTable: React.FC = () => {
         <EmptyPlaceholder
           title={search ? "No results" : "No workflows yet"}
           description={
-            search
-              ? `No workflows match "${search}"`
-              : "Sync workflows or install templates from Account Settings."
+            search ? `No workflows match "${search}"` : "Sync workflows or install templates from Account Settings."
           }
           action={
             !search ? (
@@ -264,11 +253,15 @@ const WorkflowRow: React.FC<WorkflowRowProps> = ({ workflow, toggling, onToggle,
       <div className={styles.rowMeta}>
         {lastActivity ? (
           <>
-            <Text type="text3" color="secondary">Last run</Text>
+            <Text type="text3" color="secondary">
+              Last run
+            </Text>
             <Text type="text3">{new Date(lastActivity).toLocaleDateString()}</Text>
           </>
         ) : (
-          <Text type="text3" color="secondary">Never run</Text>
+          <Text type="text3" color="secondary">
+            Never run
+          </Text>
         )}
       </div>
 
@@ -286,8 +279,26 @@ const WorkflowRow: React.FC<WorkflowRowProps> = ({ workflow, toggling, onToggle,
 
       {/* Actions — shown on row hover */}
       <div className={styles.rowActions}>
-        <Button kind="tertiary" size="small" onClick={() => onOpen("view")}>View</Button>
-        <Button kind="tertiary" size="small" onClick={() => onOpen("edit")}>Edit</Button>
+        <Button
+          kind="tertiary"
+          size="small"
+          onClick={() => {
+            onOpen("view");
+            monday.execute("valueCreatedForUser");
+          }}
+        >
+          View
+        </Button>
+        <Button
+          kind="tertiary"
+          size="small"
+          onClick={() => {
+            onOpen("edit");
+            monday.execute("valueCreatedForUser");
+          }}
+        >
+          Edit
+        </Button>
       </div>
     </div>
   );
