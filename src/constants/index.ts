@@ -26,20 +26,20 @@ export const SECONDARY_APP = {
   appId: APP_IDS.apollo,
 
   // human-facing name, properly capitalized
-  displayName: "Apollo.io",
+  displayName: "Apollo",
 
   // name sent to connectionService.create/edit
-  connectionName: "Apollo.io Connection",
+  connectionName: "Apollo Connection",
 
   // wizard step indicator label
-  stepLabel: "Connect Apollo.io",
+  stepLabel: "Connect Apollo",
 
   // button copy
-  connectButtonText: "Connect Apollo.io",
-  connectedButtonText: "Apollo.io Connected",
+  connectButtonText: "Connect Apollo",
+  connectedButtonText: "Apollo Connected",
 
   // SecondaryAppStep form copy
-  panelSubtitle: "Click Connect Apollo.io to authorize your account with OAuth 2.0",
+  panelSubtitle: "Click Connect Apollo to authorize your account with OAuth 2.0",
 
   // TemplatesStep bullet copy
   templateDescription: "Monday contacts -> Apollo sequences",
