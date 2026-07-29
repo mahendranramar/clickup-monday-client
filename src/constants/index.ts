@@ -4,45 +4,44 @@ export const UI_PATH = "/ipaas/ui";
 
 export const APP_IDS = {
   monday: "mondaycrm-1.0.0",
-  apollo: "apollo-1.0.0",
+  clickup: "clickup-1.0.0",
 } as const;
 
 // ─── Secondary app config ────────────────────────────────────────────────────
 // Monday.com is the fixed primary app. SECONDARY_APP describes whichever app
-// it's currently paired with (Apollo today). This is the ONLY 
-// place you
-// need to edit to swap it out for Hubspot/etc.
+// it's currently paired with. This is the only place you need to edit to swap
+// it out for another secondary app.
 //
 // NOTE: swapping this alone does NOT swap the workflow template — see
 // WORKFLOW_TEMPLATES below, its `id` points at a template folder whose
-// actual contents ("Monday contact -> Apollo sequence") are app-specific.
-// You'll need a new template id whenever the secondary app changes.
+// actual contents are app-specific. You'll need a new template id whenever the
+// secondary app changes.
 export const SECONDARY_APP = {
   // internal identifier — used as the Step id / discriminated union key in
   // SetupWizard.tsx.
-  key: "apollo",
+  key: "clickup",
 
   // the id connectionService/konnectifyClient use to identify this app
-  appId: APP_IDS.apollo,
+  appId: APP_IDS.clickup,
 
   // human-facing name, properly capitalized
-  displayName: "Apollo",
+  displayName: "ClickUp",
 
   // name sent to connectionService.create/edit
-  connectionName: "Apollo Connection",
+  connectionName: "ClickUp Connection",
 
   // wizard step indicator label
-  stepLabel: "Connect Apollo",
+  stepLabel: "Connect ClickUp",
 
   // button copy
-  connectButtonText: "Connect Apollo",
-  connectedButtonText: "Apollo Connected",
+  connectButtonText: "Connect ClickUp",
+  connectedButtonText: "ClickUp Connected",
 
   // SecondaryAppStep form copy
-  panelSubtitle: "Click Connect Apollo to authorize your account with OAuth 2.0",
+  panelSubtitle: "Click Connect ClickUp to authorize your account with OAuth 2.0",
 
   // TemplatesStep bullet copy
-  templateDescription: "Monday contacts -> Apollo sequences",
+  templateDescription: "ClickUp tasks -> monday items",
 } as const;
 
 export const templateFolderId = 8 as const;
@@ -55,8 +54,9 @@ export const projectId = "27" as const;
 export const WORKFLOW_TEMPLATES = [
   {
     id: templateFolderId,
-    name: "Add Newly Created Monday Contact to Apollo Sequence",
-    description: "Automatically adds a newly created contact from monday CRM to a selected Apollo sequence.",
+    name: "Sync ClickUp Tasks to Monday Items",
+    description:
+      "Creates a monday item when a new ClickUp task is created and updates the respective monday item when the ClickUp task is updated.",
   },
 ] as const;
 

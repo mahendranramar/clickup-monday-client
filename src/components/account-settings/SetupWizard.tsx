@@ -9,7 +9,7 @@ import styles from "./SetupWizard.module.css";
 import mondaySdk from "monday-sdk-js";
 const monday = mondaySdk();
 
-// SECONDARY_APP (the app paired with Monday — currently Apollo.io) now lives
+// SECONDARY_APP (the app paired with Monday) now lives
 // in ../../constants.ts. That's the ONLY place to edit to swap the secondary
 // app, since storageService.ts also needs it (a service can't import from a
 // component file, so the shared config has to live in constants).
@@ -401,7 +401,7 @@ export const SetupWizard: React.FC = () => {
     }, 500);
   }
 
-  // ── Step 3: Secondary app (currently Apollo.io) ─────────────────────────────
+  // ── Step 3: Secondary app ───────────────────────────────────────────────────
   async function handleSecondaryAppConnect() {
     const secondaryAppConnection = connections?.find((c) => c.appId === SECONDARY_APP.appId) ?? null;
     clearError(SECONDARY_APP.key);
@@ -686,9 +686,8 @@ const MondayStep: React.FC<MondayStepProps> = ({ onConnect, submitting, error, i
 };
 
 // ─── SecondaryAppStep ────────────────────────────────────────────────────────
-// Generic step for whatever SECONDARY_APP is currently configured (Apollo.io
-// today). All copy/labels come from SECONDARY_APP — nothing app-specific
-// is hardcoded here.
+// Generic step for whatever SECONDARY_APP is currently configured. All
+// copy/labels come from SECONDARY_APP — nothing app-specific is hardcoded here.
 
 interface SecondaryAppStepProps {
   onConnect: () => Promise<void>;
