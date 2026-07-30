@@ -44,7 +44,7 @@ export const SECONDARY_APP = {
   templateDescription: "ClickUp tasks -> monday items",
 } as const;
 
-export const templateFolderId = 8 as const;
+export const templateFolderId = 20 as const;
 export const orgId = "27" as const;
 export const projectId = "27" as const;
 
@@ -57,6 +57,11 @@ export const WORKFLOW_TEMPLATES = [
     name: "Sync ClickUp Tasks to Monday Items",
     description:
       "Creates a monday item when a new ClickUp task is created and updates the respective monday item when the ClickUp task is updated.",
+  },
+  {
+    id: templateFolderId,
+    name: "Sync ClickUp Task Updates to Monday Items",
+    description: "Updates the corresponding monday item whenever an existing ClickUp task is updated.",
   },
 ] as const;
 

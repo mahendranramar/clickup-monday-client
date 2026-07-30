@@ -17,7 +17,7 @@ export interface KonnectifyClientConfig {
   token?: string;
 }
 
-const baseUrl = "https://b7101-service-35433930-bdf43723.us.monday.app"; // backend
+const baseUrl = "https://f387a-service-36225882-f6f6df28.us.monday.app"; // backend
 
 export class KonnectifyClient {
   private axiosInstance: AxiosInstance;
